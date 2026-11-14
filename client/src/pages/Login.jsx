@@ -38,7 +38,7 @@ export default function Login() {
         <button className="btn" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
         <p className="muted">New visitor? <Link to="/register">Create an account</Link></p>
         <div className="demo">
-          <span>Demo accounts (after running the seed script)</span>
+          
           <div>
             <button type="button" onClick={() => demo('admin@example.com', 'Admin@123')}>Admin</button>
             <button type="button" onClick={() => demo('security@example.com', 'Security@123')}>Security</button>
