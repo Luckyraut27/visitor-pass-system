@@ -1,0 +1,38 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+
+  server:
+    build: ./server
+    restart: unless-stopped
+    depends_on: [mongo]
+    environment:
+      PORT: 5000
+      MONGO_URI: mongodb://mongo:27017/visitor_pass_db
+      JWT_SECRET: ${JWT_SECRET:-please_change_this_secret}
+      ORG_NAME: ${ORG_NAME:-Acme Corporation}
+      TIMEZONE: ${TIMEZONE:-Asia/Kolkata}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      MAIL_FROM: ${MAIL_FROM:-no-reply@example.com}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_FROM: ${TWILIO_FROM:-}
+    volumes:
+      - uploads:/app/uploads
+
+  client:
+    build: ./client
+    restart: unless-stopped
+    depends_on: [server]
+    ports:
+      - "8080:80"
+
+volumes:
+  mongo-data:
+  uploads:
